@@ -11,10 +11,16 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
+// Port Number
 var PORT = 3000;
 
 // Initialize Express
 var app = express();
+
+// HandleBars View Engine
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
 
 // Configure middleware
 
@@ -26,39 +32,56 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+// Mongo Database
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/dandanNews";
 mongoose.connect(MONGODB_URI);
-
 
 // Routes
 
+// Render Page
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
+
     // First, we grab the body of the html with axios
-    axios.get("http://www.echojs.com/").then(function(response) {
+    axios.get("https://www.smh.com.au/").then(function(response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
 
+		// ._2XVos
         // Now, we grab every h2 within an article tag, and do the following:
-        $("article h2").each(function(i, element) {
+        $("._15r1L").each(function(i, element) {
             // Save an empty result object
             var result = {};
 
             // Add the text and href of every link, and save them as properties of the result object
-            result.title = $(this)
-                .children("a")
-                .text();
-            result.link = $(this)
-                .children("a")
-                .attr("href");
+			result.title = $(this).children("._1YzQk").children("._2XVos").text();
+			result.link = $(this).children("._1YzQk").children("._2XVos").children("a").attr("href");
+			result.snippet = $(this).children("._1YzQk").children("._3XEsE").text();
+			result.cat = $(this).children("._1YzQk").children("._3XK8N").text();
+			result.image = $(this).children("figure.XmCQH").children("a").children("div._1hWPs").children("picture").children("img._1MQMh").attr("src");
+			result.saved = false;
 
+            // db.Article.collection.drop();
+			db.Article.collection.deleteMany({ saved: false });
+			
             // Create a new Article using the `result` object built from scraping
             db.Article.create(result)
                 .then(function(dbArticle) {
                     // View the added result in the console
-                    console.log(dbArticle);
+                    db.Article.find({})
+                        .then(function(dbArticle) {
+                            // If we were able to successfully find Articles, send them back to the client
+                            res.json(dbArticle);
+                        })
+                        .catch(function(err) {
+                            // If an error occurred, send it to the client
+                            res.json(err);
+                        });
                 })
                 .catch(function(err) {
                     // If an error occurred, log it
@@ -67,7 +90,6 @@ app.get("/scrape", function(req, res) {
         });
 
         // Send a message to the client
-        res.send("Scrape Complete");
     });
 });
 
