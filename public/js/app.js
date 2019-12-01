@@ -15,7 +15,7 @@ function renderArticles(articleArray) {
 		'<div class="row">' + '<div class="midCard col-12">' + '<div style="height:90px;" class="row">' +
 		'<div class="col-3 imgCover h-100 p-0">' + '<img height="100%" src="' + articleArray[i].image + '">' +
 		'</div>' + '<div class="col-9  h-100 p-0">' + '<h4 class="mt-2 pl-3 pr-3 hText">' + articleArray[i].title +'</h4>' + '</div>' + '</div>' +
-		'<div class="row h-100">' + '<div class="col-12">' + '<p class="pText mt-2 pr-1">' + articleArray[i].snippet + '</p>' +
+		'<div class="row h-100">' + '<div class="col-12">' + '<p class="pText mt-3 pr-1">' + articleArray[i].snippet + '</p>' +
 		'</div>' + '</div>' + '</div>' + '</div>' + '<div class="row">' + '<div class="botCard col-12 text-center">' +
 		'<div class="row h-100">' + '<div class="col-6  h-100 p-0">' + '<a target="_blank" href="https://www.smh.com.au/' + articleArray[i].link + ' "><button class="btnAction btnBlue">Check Article</button></a>' +
 		'</div>' + '<div class="col-6  h-100 p-0">' + '<button class="btnAction btnPink">Save Article</button>' +
@@ -29,14 +29,14 @@ $.getJSON("/articles", function(data) {
 });
 
 // Scrape button function on click event
-$(document).on("click", "#scrape", function() {
-    $.ajax({
-        method: "GET",
-        url: "/scrape"
-    }).then(function(data) {
-        renderArticles(data);
-    });
-});
+// $(document).on("click", "#scrape", function() {
+//     $.ajax({
+//         method: "GET",
+//         url: "/scrape"
+//     }).then(function(data) {
+//         renderArticles(data);
+//     });
+// });
 
 // Scrape button function on click event
 $(document).on("click", "#scrape", function() {

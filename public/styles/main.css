@@ -1,8 +1,14 @@
 body {
-    background: #1a1a1a;
+	z-index: 1;
 	color: white;
 	position: relative;
-	/* overflow: hidden; */
+	width: 100%;
+	height: 100%;
+	background: #1a1a1a;
+}
+
+div {
+	background:transparent;
 }
 
 
@@ -12,22 +18,23 @@ h1,
 h2,
 h3,
 h4,
-h5 {
-	font-family: 'Merriweather', serif;
+h5, button {
+	font-family: 'Anton', sans-serif;
+	font-weight: bolder;
 }
 
-h1 {
-	font-size: 1.8em;
+h1,h2 {
+	font-size: 1.3em;
 	text-transform: uppercase;
 }
 
 h3 {
-	font-size: 1.4em;
-	text-transform: capitalize;
+	font-size: 1em;
+	text-transform: uppercase;
 }
 
 h4 {
-	font-size: 1.1em;
+	font-size: 1em;
 	text-transform: capitalize;
 }
 
@@ -35,30 +42,77 @@ h5, button {
 	font-size: .9em;
 }
 
-p, button  {
+p  {
 	font-family: 'Open Sans', sans-serif;
 }
 
 p {
-	font-size: .9em;
+	font-size: .85em;
 }
 
 button {
-	font-size: .8em;
+	font-size: .7em;
 	text-transform: uppercase;
 }
 
+/* NAVIGATION */
+
+#nav {
+	margin-top: 25px;
+	position: fixed;
+	z-index: 10;
+	height: 100px;
+	/* background-color: rgba(23, 23, 23, 0.15); */
+}
+
+#showArticles {
+	margin-top: 125px;
+}
+
+.btnRounded {
+	background-color: rgba(23, 23, 23, 0.45);
+	padding: 15px 20px;
+	border-radius: 10px;
+	border: none;
+	color: white;
+}
+
+.btnRounded:hover {
+	background-color: rgba(23, 23, 23, 0.8);
+	color: aqua;
+}
+
+.logoRounded {
+	background-color: rgba(23, 23, 23, 0.45);
+	width:300px;
+	height: 100%;
+	padding: 5px 5px;
+	border-radius: 10px;
+}
+
+.label {
+	position: absolute;
+	top: 20px;
+	left: 0;
+	padding: 10px 25px 2px 15px;
+	background-color: rgba(23, 23, 23, 0.8);
+	border-radius: 0 10px 10px 0;
+}
 
 /* COLOURS */
 
 .dark-bg {
-    background: #1f1f1f;
+	/* background: #1f1f1f; */
+	background-color: rgba(23, 23, 23, 0.25);
+	/* border-bottom-right-radius: 50px; */
 }
 
 .active {
     /* background-image: url('../src/staticBG.gif'); */
     /* background-repeat: repeat; */
-    background: #1f1f1f;
+	/* background: #1f1f1f; */
+	/* background:transparent; */
+	background-color: rgba(23, 23, 23, 0.6);
 }
 
 a.btn {
@@ -69,25 +123,31 @@ a.btn {
 	color: aqua;
 }
 
-
 /* ARTICLE CARDS */
 
 article.cards {
-	border: 1px solid #3a3a3a;
 	border-radius: 10px;
 	overflow: hidden;
-	/* background-color: rgba(23, 23, 23, 0.646); */
+	background-color: rgba(23, 23, 23, 0.45);
     width: 350px;
     height: 250px;
 	position: relative;
+	box-shadow: -5px 5px 5px rgba(23, 23, 23, 0.15);
 	margin: 15px;
 	-webkit-backdrop-filter: blur(10px);
 	  backdrop-filter: blur(10px);
-	  transition: .8s;
+	  transition: .4s;
 }
 
 article:hover {
-	transform: scale(1.1);
+	transform: scale(1.025);
+}
+
+.bgRounded {
+	background-color: rgba(23, 23, 23, 0.45);
+	width:300px;
+	padding: 15px 20px;
+	border-radius: 10px;
 }
 
 /* NEWS CARDS */
@@ -99,10 +159,10 @@ article:hover {
 	top: 0;
 	left: 0;
 }
-
+/* 
 .headlineGreen {
-	background: black;
-}
+	background-color: rgba(23, 23, 23, 0.6);
+} */
 
 .imgCover {
 	width: 100%;
@@ -113,7 +173,7 @@ article:hover {
 }
 
 .midCard {
-	position: absolute;~
+	position: absolute;
 	width: 350px;
 	height: 175px;
 	bottom: 40px;
@@ -154,25 +214,25 @@ button.btnAction {
 	height: 100%;
 	border: none;
 	box-shadow: none;
-	transition: .8s;
+	transition: .3s;
 }
 
 .btnBlue {
-	background: #37db9f;
+	background-color: rgba(24, 206, 152, 0.6);
 	color: white;
 }
 
 .btnPink {
-	background: #fc6075;
+	background-color: rgba(180, 28, 81, 0.6);
 	color: white;
 }
 
 .btnBlue:hover {
-	background: #28986f;;
+	background-color: rgba(28, 247, 181, 0.6);
 }
 
 .btnPink:hover {
-	background: #9b2030;
+	background-color: rgba(230, 22, 95, 0.6);
 }
 
 
