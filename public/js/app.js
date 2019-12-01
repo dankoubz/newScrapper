@@ -1,14 +1,9 @@
 function renderArticles(articleArray) {
     // For each one
 	$("#articles").empty();
-		
-	// 	// $("#articles").append("<article class='cards' data-id='" + articleArray[i]._id + "'>" + "<h4 class='pink'>Story: " + ([i + 1]) + "</h4>" + "<h4>" + articleArray[i].title + "</h4>" + "<a target='_blank' class='btn btn-sm btn-warning' href='https://www.smh.com.au/" + articleArray[i].link + "'>Check Out Article</a>" + "<button class='ml-3 btn btn-sm btn-danger'>Save Article</button>");
-	// }
-
-	// console.log("fired here: " + articleArray.image[0]);
 
 	for (var i = 0; i < articleArray.length; i++) {
-		$("#articles").append('<article class="cards" data-id="1">' + '<div class="row h-100">' + '<div class="topCard col-12">' +
+		$("#articles").append('<article class="cards">' + '<div class="row h-100">' + '<div class="topCard col-12">' +
 		'<div class="row h-100">' + '<div class="col-3 headlineGreen h-100 p-0">' + 
 		'<h5 class="pl-3 h-100 d-flex align-items-center">Story: ' + ([i + 1]) + '</h5>' + '</div>' + '<div class="col-9 h-100 p-0 ">' +
 		'<p class="pl-3 h-100 d-flex blue align-items-center">' + articleArray[i].cat + '</p>' + '</div>' + '</div>' + '</div>' + '</div>' + 
@@ -18,7 +13,7 @@ function renderArticles(articleArray) {
 		'<div class="row h-100">' + '<div class="col-12">' + '<p class="pText mt-3 pr-1">' + articleArray[i].snippet + '</p>' +
 		'</div>' + '</div>' + '</div>' + '</div>' + '<div class="row">' + '<div class="botCard col-12 text-center">' +
 		'<div class="row h-100">' + '<div class="col-6  h-100 p-0">' + '<a target="_blank" href="https://www.smh.com.au/' + articleArray[i].link + ' "><button class="btnAction btnBlue">Check Article</button></a>' +
-		'</div>' + '<div class="col-6  h-100 p-0">' + '<button class="btnAction btnPink">Save Article</button>' +
+		'</div>' + '<div class="col-6  h-100 p-0">' + '<button class="btnAction btnPink saveBtn" data-id="' + articleArray[i]._id + '">Save Article</button>' +
 		'</div>' + '</div>' + '</div>' + '</div>' + '</article>');
 	}
 }	
@@ -27,16 +22,6 @@ function renderArticles(articleArray) {
 $.getJSON("/articles", function(data) {
     renderArticles(data);
 });
-
-// Scrape button function on click event
-// $(document).on("click", "#scrape", function() {
-//     $.ajax({
-//         method: "GET",
-//         url: "/scrape"
-//     }).then(function(data) {
-//         renderArticles(data);
-//     });
-// });
 
 // Scrape button function on click event
 $(document).on("click", "#scrape", function() {
@@ -83,30 +68,22 @@ $(document).on("click", "p", function() {
 });
 
 // When you click the savenote button
-$(document).on("click", "#savenote", function() {
+$(document).on("click", ".saveBtn", function() {
     // Grab the id associated with the article from the submit button
     var thisId = $(this).attr("data-id");
+    console.log("1: " + thisId);
 
     // Run a POST request to change the note, using what's entered in the inputs
     $.ajax({
             method: "POST",
-            url: "/articles/" + thisId,
+            url: "/saved/" + thisId,
             data: {
-                // Value taken from title input
-                title: $("#titleinput").val(),
-                // Value taken from note textarea
-                body: $("#bodyinput").val()
+                saved: true
             }
         })
         // With that done
         .then(function(data) {
             // Log the response
-            console.log(data);
-            // Empty the notes section
-            $("#notes").empty();
+            console.log("2: " + data);
         });
-
-    // Also, remove the values entered in the input and textarea for note entry
-    $("#titleinput").val("");
-    $("#bodyinput").val("");
 });
