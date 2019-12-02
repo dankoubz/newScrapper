@@ -65,6 +65,14 @@ button {
 	/* background-color: rgba(23, 23, 23, 0.15); */
 }
 
+.left {
+	border-radius: 0 20px 20px 0 ;
+}
+
+.right {
+	border-radius: 20px 0 0 20px ;
+}
+
 #showArticles {
 	margin-top: 125px;
 }
@@ -196,8 +204,8 @@ article:hover {
 	/* overflow: auto;
 overflow-y: hidden; */
 	height: 80px;
-	margin-bottom: 100px;
-	margin-top: 120px;
+	margin-bottom: 80px;
+	margin-top: 140px;
 }
 
 #tags2 {
@@ -280,7 +288,7 @@ button.btnAction {
 	transition: .3s;
 }
 
-.btnBlue {
+.btnTeal {
 	background-color: rgba(24, 206, 152, 0.6);
 	color: white;
 }
@@ -290,12 +298,22 @@ button.btnAction {
 	color: white;
 }
 
-.btnBlue:hover {
+.btnBlue {
+	background-color: rgba(18, 66, 225, 0.516);
+	color: white;
+}
+
+.btnTeal:hover {
 	background-color: rgba(28, 247, 181, 0.6);
 }
 
 .btnPink:hover {
 	background-color: rgba(230, 22, 95, 0.6);
+}
+
+.btnBlue {
+	background-color: rgba(18, 66, 225, 0.735);
+	color: white;
 }
 
 

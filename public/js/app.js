@@ -65,6 +65,30 @@ $(document).on("click", ".saveBtn", function() {
             // Log the response
             console.log(data);
         });
+
+    $(this).addClass('d-none');
+    $(".unsaveBtn").removeClass('d-none');
+});
+
+// on click unsave button
+$(document).on("click", ".unsaveBtn", function() {
+    // Grab the id associated with the article from the submit button
+    var thisId = $(this).attr("data-id");
+
+    $.ajax({
+            method: "POST",
+            url: "/unsaved/" + thisId,
+            data: {
+                _id: thisId,
+                saved: false
+            }
+        }).then(function(data) {
+            // Log the response
+            console.log(data);
+        });
+
+    $(this).addClass('d-none');
+    $(".saveBtn").removeClass('d-none');
 });
 
 // HOW TO RENDER ARTICLE CARDS
@@ -82,8 +106,9 @@ function renderArticles(articleArray) {
 		'</div>' + '<div class="col-9  h-100 p-0">' + '<h4 class="mt-2 pl-3 pr-3 hText">' + articleArray[i].title +'</h4>' + '</div>' + '</div>' +
 		'<div class="row h-100">' + '<div class="col-12">' + '<p class="pText mt-3 pr-1">' + articleArray[i].snippet + '</p>' +
 		'</div>' + '</div>' + '</div>' + '</div>' + '<div class="row">' + '<div class="botCard col-12 text-center">' +
-		'<div class="row h-100">' + '<div class="col-6  h-100 p-0">' + '<a target="_blank" href="https://www.smh.com.au/' + articleArray[i].link + ' "><button class="btnAction btnBlue">Check Article</button></a>' +
-		'</div>' + '<div class="col-6  h-100 p-0">' + '<button class="btnAction btnPink saveBtn" data-id="' + articleArray[i]._id + '">Save Article</button>' +
+		'<div class="row h-100">' + '<div class="col-6  h-100 p-0">' + '<a target="_blank" href="https://www.smh.com.au/' + articleArray[i].link + ' "><button class="btnAction btnTeal">Check Article</button></a>' +
+        '</div>' + '<div class="col-6  h-100 p-0">' + '<button class="btnAction btnPink saveBtn" data-id="' + articleArray[i]._id + '">Save Article</button>' + 
+        '<button class="d-none btnAction btnBlue unsaveBtn" data-id="' + articleArray[i]._id + '">♥ Saved</button>' +
 		'</div>' + '</div>' + '</div>' + '</div>' + '</article>');
 	}
 }

@@ -155,6 +155,19 @@ app.post("/saved/:id", function(req, res) {
         });
 });
 
+// Route for saving/updating an Article's associated Note
+app.post("/unsaved/:id", function(req, res) {
+    db.Article.findOneAndUpdate({ _id: req.params.id } , { saved: false })
+        .then(function(dbArticle) {
+            // If we were able to successfully update an Article, send it back to the client
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+        });
+});
+
 // Start the server
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");
