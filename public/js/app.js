@@ -1,3 +1,73 @@
+// Grab the articles as a json
+$.getJSON("/articles", function(data) {
+    renderArticles(data);
+    renderTags(data);
+});
+
+// Scrape button function on click event
+$(document).on("click", "#scrape", function() {
+    $.ajax({
+        method: "GET",
+        url: "/scrape"
+    }).then(function(data) {
+        renderArticles(data);
+        renderTags(data);
+    });
+});
+
+// on click function to show saved items
+$(document).on("click", "#showSaved", function() {
+    $.ajax({
+            method: "GET",
+            url: "/saved"
+        }).then(function(data) {
+            renderArticles(data);
+            renderTags(data);
+        });
+
+    // add button active styling
+    $(this).addClass("active");
+    $("#showNews").removeClass("active");
+    // display message Saved
+    $("#msgSave").removeClass("d-none");
+    $("#msgNews").addClass("d-none");
+});
+
+// Clicking on the "NEWS" Button
+$(document).on("click", "#showNews", function(){
+    // Get and Render All Articles
+    $.getJSON("/articles", function(data) {
+        renderArticles(data);
+    });
+
+    // add button active styling
+    $(this).addClass("active");
+    $("#showSaved").removeClass("active");
+     // display message Saved
+     $("#msgNews").removeClass("d-none");
+     $("#msgSave").addClass("d-none");
+});
+
+// on click save button to display saved items
+$(document).on("click", ".saveBtn", function() {
+    // Grab the id associated with the article from the submit button
+    var thisId = $(this).attr("data-id");
+    console.log("1: " + thisId);
+
+    $.ajax({
+            method: "POST",
+            url: "/saved/" + thisId,
+            data: {
+                _id: thisId,
+                saved: true
+            }
+        }).then(function(data) {
+            // Log the response
+            console.log(data);
+        });
+});
+
+// HOW TO RENDER ARTICLE CARDS
 function renderArticles(articleArray) {
     // For each one
 	$("#articles").empty();
@@ -16,74 +86,16 @@ function renderArticles(articleArray) {
 		'</div>' + '<div class="col-6  h-100 p-0">' + '<button class="btnAction btnPink saveBtn" data-id="' + articleArray[i]._id + '">Save Article</button>' +
 		'</div>' + '</div>' + '</div>' + '</div>' + '</article>');
 	}
+}
+
+// Render Tags
+function renderTags(articleTags) {
+    // For each one
+    $("#tags2").empty();
+    
+    console.log(articleTags[1].cat);
+
+	for (var j = 0; j < articleTags.length; j++) {
+        $("#tags2").append('<button class="btnRounded btnControl ml-3">' + articleTags[j].cat + '</button>');
+	}
 }	
-
-// Grab the articles as a json
-$.getJSON("/articles", function(data) {
-    renderArticles(data);
-});
-
-// Scrape button function on click event
-$(document).on("click", "#scrape", function() {
-    $.ajax({
-        method: "GET",
-        url: "/scrape"
-    }).then(function(data) {
-        renderArticles(data);
-    });
-});
-
-// Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
-    // Empty the notes from the note section
-    $("#notes").empty();
-    // Save the id from the p tag
-    var thisId = $(this).attr("data-id");
-
-    // Now make an ajax call for the Article
-    $.ajax({
-            method: "GET",
-            url: "/articles/" + thisId
-        })
-        // With that done, add the note information to the page
-        .then(function(data) {
-            console.log(data);
-            // The title of the article
-            $("#notes").append("<h2>" + data.title + "</h2>");
-            // An input to enter a new title
-            $("#notes").append("<input id='titleinput' name='title' >");
-            // A textarea to add a new note body
-            $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-            // A button to submit a new note, with the id of the article saved to it
-            $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
-
-            // If there's a note in the article
-            if (data.note) {
-                // Place the title of the note in the title input
-                $("#titleinput").val(data.note.title);
-                // Place the body of the note in the body textarea
-                $("#bodyinput").val(data.note.body);
-            }
-        });
-});
-
-// When you click the savenote button
-$(document).on("click", ".saveBtn", function() {
-    // Grab the id associated with the article from the submit button
-    var thisId = $(this).attr("data-id");
-    console.log("1: " + thisId);
-
-    // Run a POST request to change the note, using what's entered in the inputs
-    $.ajax({
-            method: "POST",
-            url: "/saved/" + thisId,
-            data: {
-                saved: true
-            }
-        })
-        // With that done
-        .then(function(data) {
-            // Log the response
-            console.log("2: " + data);
-        });
-});

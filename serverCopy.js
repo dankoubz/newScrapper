@@ -81,32 +81,51 @@ app.get("/scrape", function(req, res) {
             if (!result.image )
                 articleErrors.push("Missing Image");
 
-            // Create a new Article using the `result` object built from scraping
-            db.Article.create(result)
-                .then(function(dbArticle) {
-                    // View the added result in the console
-                    console.log(dbArticle);
-                    
-                    db.Article.find({})
-                        .then(function(dbArticle) {
-                            // If we were able to successfully find Articles, send them back to the client
-                            res.json(dbArticle);
-                            // console.log("Adding an article to the Output");
-                        })
-                        .catch(function(err) {
-                            // If an error occurred, send it to the client
-                            console.error(err);
-                        });
-                })
-                .catch(function(err) {
-                    // If an error occurred, log it
-                    console.error(err);
-                });
+            if ( articleErrors.length ){
+                console.error("Invalid Article: "+articleErrors.join(", "));
+            } else {
+                // Check if Article already exists with Same Link Attribute
+                db.Article.find({ link: result.link })
+                    .then(function(dbArticle) {
+
+                        // If No Existing Article is Found - Create One
+                        if(dbArticle.length == 0){
+                            // Create a new Article using the `result` object built from scraping
+                            db.Article.create(result)
+                                .then(function(dbArticle) {
+                                    // View the added result in the console
+                                    console.log(dbArticle);
+                                    /*
+                                    db.Article.find({})
+                                        .then(function(dbArticle) {
+                                            // If we were able to successfully find Articles, send them back to the client
+                                            // res.json(dbArticle);
+                                            // console.log("Adding an article to the Output");
+                                        })
+                                        .catch(function(err) {
+                                            // If an error occurred, send it to the client
+                                            console.error(err);
+                                        });
+                                    */
+                                })
+                                .catch(function(err) {
+                                    // If an error occurred, log it
+                                    console.error(err);
+                                });
+                        }
+
+                    })
+                    .catch(function(err) {
+                        console.log("2: Catch");
+                        //Oops
+                    });
+
+            }
+           
         });
 
         // db.Article.collection.drop();
-        // db.Article.collection.deleteMany({ saved: false },{ skip:20 , sort: { _id: "desc" } } );
-        db.Article.collection.deleteMany({ saved: false });
+        db.Article.collection.deleteMany({ saved: false },{ skip:20 , sort: { _id: "desc" } } );
         
         // res.json("Scrape Complete");
     });

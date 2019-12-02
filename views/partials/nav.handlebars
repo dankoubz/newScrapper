@@ -25,12 +25,12 @@
 	{{!-- Scrape Articles Button --}}
 	<div class="col-12 dark-bg col-lg-4 d-flex justify-content-center">
 		<div class="label-right">
-					<h4>Article <br> Actions</h4>
-				</div>
+			<h4>Article <br> Actions</h4>
+		</div>
 		{{!-- Section One - Articles --}}
 		<div id="allArticles" class="col-6 text-center">
 			<div style="height: 100px;" class="d-flex align-items-center">
-				<button class="btnRounded active ml-3 mr-3">
+				<button id="showNews" class="btnRounded active ml-3 mr-3">
 					<h3 class="">News</h3>
 					<img height="30px" src="../src/eyes.gif">
 				</button>
@@ -40,6 +40,11 @@
 				</button>
 			</div>
 		</div>
+	</div>
+
+	<div class="col-12 text-center d-flex justify-content-center">
+		<h3 id="msgNews" class="mt-5 mb-5 bgRounded">Your News Stories</h3>
+		<h3 id="msgSave" class="mt-5 mb-5 bgRounded d-none">Your Saved Stories</h3>
 	</div>
 
 </div>
